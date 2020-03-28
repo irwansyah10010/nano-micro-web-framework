@@ -1,0 +1,18 @@
+{  
+    "App":{
+        "App_name" : "Example Framework-Nano",
+        "App_server" : "/Nano-versi-alpha-2/",
+        "App_import" : "/Nano-versi-alpha-2/asset/",
+        "App_files" : "/Nano-versi-alpha-2/files/"
+    },
+    
+    
+    "Database":{
+        "DB_driver": "mysql",
+        "DB_name" : "implementasi_SIA",
+        "DB_port" : 3306,
+        "DB_host" :"localhost",
+        "DB_user" :"root",
+        "DB_password" :""
+    }
+}

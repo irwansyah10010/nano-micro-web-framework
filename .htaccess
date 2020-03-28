@@ -1,0 +1,8 @@
+RewriteEngine on
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([0-9a-zA-Z_/_-]+)? public/web.php?url=$1 [L,QSA]
+
+#RewriteRule ^ help/home.php [NC,L]
+#NC = non case sensitif
+#L = make

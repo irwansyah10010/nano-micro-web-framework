@@ -1,0 +1,4 @@
+create :  ["model","controller","view","object","tables"],
+update :  ["model","tables"],
+remove :  ["model","tables"],
+list   :  ["route","libav",]

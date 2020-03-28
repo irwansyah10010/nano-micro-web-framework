@@ -1,0 +1,22 @@
+<?php 
+error_reporting(3);
+
+require_once 'engine/utility/ArrayManipulation.php';
+require_once 'engine/utility/JsonManipulation.php';
+require_once 'engine/console/Keyword.php';
+require_once 'engine/console/General.php';
+require_once 'engine/console/Rules.php';
+require_once 'engine/files/Files.php';
+require_once 'engine/Loader.php';
+
+require_once './engine/databases/Database.php';
+require_once './engine/databases/QueryExp.php';
+require_once './engine/databases/driver/MysqlConnection.php';
+require_once './engine/databases/order/DDLQuery.php';
+require_once './engine/databases/order/DMLQuery.php';
+require_once './engine/databases/order/OtherQuery.php';
+require_once './engine/databases/Connection.php';
+
+new engine\console\General($argv);
+
+?>
