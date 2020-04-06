@@ -8,11 +8,11 @@
 
 use engine\database\order\OtherQuery;
 /**
- * Description of Dosen
+ * Description of query
  *
  * @author Irwansyah
  */
-class QueryCustom {
+class QueryCustoming {
     //put your code here
     public function __construct() {
         $other = new OtherQuery();

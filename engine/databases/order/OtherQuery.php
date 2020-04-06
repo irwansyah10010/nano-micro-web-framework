@@ -32,8 +32,6 @@ class OtherQuery extends \engine\database\QueryExp{
         }
         
         $this->query = $query;
-        
-        return $this->query;
     }
     
     public function truncate($tableName) {
@@ -42,5 +40,9 @@ class OtherQuery extends \engine\database\QueryExp{
 
     public function dropTable($tableName) {
         $this->query = "drop table $tableName";
-    }    
+    }
+
+    public function create($database) {
+        $this->query = "create database $database";
+    }
 }

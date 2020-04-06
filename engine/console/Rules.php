@@ -391,7 +391,7 @@ class Rules {
                 
                 if($array[2] == 'eksekusi'){
                     $query = new \QueryCustoming();
-                    $query->exe();
+                    
                 }
                 
                 break;

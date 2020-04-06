@@ -22,13 +22,9 @@ class Keyword {
             'create' => ['controller','model','view','tables'], // complete
             'update' =>['tables'], // model
             'remove' =>['tables'], // model
-            'list' =>['libav','model','controller','objek'],
+            'list' => ['libav','model','controller','objek'],
             'query' => ['eksekusi']
         ];
-    
-    
-    
-    
     
     var $penjelasanMethod = 
             [

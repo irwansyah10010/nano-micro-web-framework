@@ -29,7 +29,7 @@ class ControllerExample extends Controller{
         $this->response->view('help/index');
     }
     
-    public function store(){
+    public function save(){
         $namaDepan = $this->request->post('namaDepan','null');
         $namaBelakang = $this->request->post('namaBelakang','null');
         $umur = $this->request->post('umur','null');

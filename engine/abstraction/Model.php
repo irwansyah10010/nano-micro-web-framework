@@ -21,7 +21,7 @@ abstract class Model{
     
     // Data yang di gunakan untuk pengenalan data pada class model
     private $tableName="";
-    private $fieldTable="";
+    private $fieldTable=array();
     private $query="";
     private $primaryKey="";
     private $foreignKey = "";
@@ -99,7 +99,7 @@ abstract class Model{
         }else{
             
             $this->query = $this->bq->insert($this->getTable(), $this->getField());
-            echo "$this->query";
+            
             
             try{
                 $this->stmt = $this->con->getConnection()->prepare($this->query);
@@ -217,11 +217,6 @@ abstract class Model{
         $this->sort = $sort;
     }
     
-    // memanggil statement yang sudah di buat
-    function getStatement() {
-        return $this->stmt;
-    }
-    
     // membaca jumlah data yang ada di tabel
     function readSum() {
         $total = 0;
@@ -238,6 +233,11 @@ abstract class Model{
         }
         return $total;
     }
+
+    // memanggil statement yang sudah di buat
+    function getStatement() {
+        return $this->stmt;
+    }
     
     /***************************************************************************
      * Data Manipulation Language 3 (Renew) 
@@ -246,18 +246,24 @@ abstract class Model{
     
     /*
      * fungsi eksekusi
+     * param column = untuk memeriksa apakah statement tersebut terdapat field yang ikut di eksekusi
+     * default = "" dan "execute untuk menambahkan field"
      */
-    function ready(){
+    function ready($columns = ""){
         try{
             $this->stmt = $this->con->getConnection()->prepare($this->query);
-            $this->stmt->execute();
+            if($columns == "execute"){
+                $this->stmt->execute($this->fields);
+            }else{
+                $this->stmt->execute();
+            }
         } catch (\PDOException $ex) {
             ErrorCode::setMessage('on File '.$_SERVER['REQUEST_URI'].'<br>'.$ex->getMessage());
             $this->loader->loaderPage(ErrorCode::getPageError(), ErrorCode::getLocationError());
         }
     }
     
-    function tesQuery() {
+    function testQuery() {
         return $this->query;
     }
     
@@ -271,11 +277,11 @@ abstract class Model{
      */
     public function select($tablename,$distinct = 'no'){
         if($distinct == 'no'){
-            $this->query = $this->query = $this->dml->select($tablename);
+            $this->query = $this->dml->select($tablename);
         }else if($distinct == 'distinct'){
-            $this->query = $this->query = $this->dml->selectDistinct($tablename);
+            $this->query =  $this->dml->selectDistinct($tablename);
         }else{
-            $this->query = $this->query = $this->dml->select($tablename);
+            $this->query =  $this->dml->select($tablename);
         }
         
         return $this;
@@ -288,6 +294,7 @@ abstract class Model{
      */
     public function queryCustom($link){
         $this->query .=" $link";
+        
         return $this;
     }
 
@@ -333,9 +340,14 @@ abstract class Model{
      * 
      * comparing = memilih operator sama dengan, tidak sama dengan ataupun lebih 
      * dan kurang dari, dengan nilai default : =. nilainya : > < = >= <= !=.
+     * typeValues = mengganti param value dengan type string, default : ''. nilainya = string
      */
-    public function comparing($columnName,$value,$comparing='='){
+    public function comparing($columnName,$value,$typeValue="",$comparing='='){
         
+        if($typeValue == 'string'){
+            $value = "'".$value."'";
+        }
+
         switch ($comparing) {
             case '=':
                 $this->query .= $this->dml->equalColumn($columnName,$value);
@@ -410,6 +422,110 @@ abstract class Model{
     public function limit($firstColumn,$lastColumn){
         $this->query .= $this->dml->limit($firstColumn,$lastColumn);
         
+        return $this;
+    }
+
+    /***************************************************************************
+     * Data Manipulation Language 3 (Renew) 
+     * Save , update, remove dan custom
+     **************************************************************************/
+    
+    /*
+    * versi save terbaru 
+    * dengan penggunaan yg sedikit berbeda
+    */ 
+    public function saveData(){
+
+        if($type == 'string'){
+            $id = "'".$id."'";
+        }
+
+        if($this->getField() == ""){
+            echo "Field table belum di isi";
+        }else if($this->getTable() == ""){
+            echo "Nama table belum di isi";
+        }else{
+            $this->query = $this->dml->save($this->getTable(),$this->getField());
+        }
+
+        return $this;
+    }
+
+    /*
+    * versi update terbaru
+    * dengan penggunaan yg sedikit berbeda
+    */ 
+    public function updateData($id,$type = ''){
+
+        if($type == 'string'){
+            $id = "'".$id."'";
+        }
+
+        if($this->getField() == ""){
+            echo "Field table belum di isi";
+        }else if($this->getTable() == ""){
+            echo "Nama table belum di isi";
+        }else{
+            $this->query = $this->dml->update($this->getTable(),$this->getField(),$this->getPrimaryKey(),$id);
+        }
+
+        return $this;
+    }
+
+
+    /*
+    * versi update terbaru
+    * dengan penggunaan customisasi bagian id
+    */ 
+    public function updateCustom(){
+
+        if($this->getField() == ""){
+            echo "Field table belum di isi";
+        }else if($this->getTable() == ""){
+            echo "Nama table belum di isi";
+        }else{
+            $this->query = $this->dml->updateCustom($this->getTable(),$this->getField());
+        }
+
+        return $this;
+    }
+
+    /*
+    * versi update terbaru
+    * dengan penggunaan yg sedikit berbeda
+    */ 
+    public function removeData($id,$type = ''){
+
+        if($type == 'string'){
+            $id = "'".$id."'";
+        }
+
+        if($this->getField() == ""){
+            echo "Field table belum di isi";
+        }else if($this->getTable() == ""){
+            echo "Nama table belum di isi";
+        }else{
+            $this->query = $this->dml->delete($this->getTable(),$this->getPrimaryKey(),$id);
+        }
+
+        return $this;
+    }
+
+
+    /*
+    * versi update terbaru
+    * dengan penggunaan customisasi bagian id
+    */ 
+    public function removeCustom(){
+
+        if($this->getField() == ""){
+            echo "Field table belum di isi";
+        }else if($this->getTable() == ""){
+            echo "Nama table belum di isi";
+        }else{
+            $this->query = $this->dml->deleteCustom($this->getTable());
+        }
+
         return $this;
     }
 }

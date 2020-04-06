@@ -35,8 +35,6 @@ class DMLQuery extends \engine\database\QueryExp{
         
         $values = implode(",", $replace);
         
-        
-        
         $this->query = "INSERT INTO $tablename($column) values($values)";
         return $this->query;
     }
@@ -52,8 +50,11 @@ class DMLQuery extends \engine\database\QueryExp{
     }
     
     public function updateCustom($tablename,$dataList) {
-        
-        $this->query = "UPDATE $tablename set ";
+        $values = implode("= ?,", $dataList);
+
+        $this->query = "UPDATE $tablename set $values = ?";
+
+        return $this->query;
     }
     
     /*
@@ -61,6 +62,12 @@ class DMLQuery extends \engine\database\QueryExp{
      */
     public function delete($tablename,$columnKey,$key){
         $this->query = "DELETE from $tablename where $columnKey = $key";
+        
+        return $this->query;
+    }
+
+    public function deleteCustom($tablename){
+        $this->query = "DELETE from $tablename";
         
         return $this->query;
     }
